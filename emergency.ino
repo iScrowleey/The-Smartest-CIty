@@ -2,12 +2,15 @@
 #include <Firebase_ESP_Client.h>
 #include <addons/TokenHelper.h>
 #include <Servo.h>
-const int buzzerPin = D1; // Define the buzzer pin (D1 corresponds to GPIO5 on NodeMCU)
 int frequency = 1000; // Initial frequency
 int duration = 500; // Initial duration
 // Define the pin connected to the button
+const int buzzerPin = D1; // Define the buzzer pin (D1 corresponds to GPIO5 on NodeMCU)
 const int buzzerPin2 = D3; // Define the pin connected to the button
 const int buzzerPin3 = D4; // Define the pin connected to the button
+const int ledPin1=D6;
+const int ledPin2=D7;
+const int ledPin3=D8;
 bool isTonePlaying = false; 
 bool controlfire;
 bool controlhealth;
@@ -39,6 +42,9 @@ void setup() {
   pinMode(buzzerPin, OUTPUT); // Set the buzzer pin as an output
   pinMode(buzzerPin2, OUTPUT); // Set the buzzer pin as an output
   pinMode(buzzerPin3, OUTPUT); 
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
   Serial.begin(9600);
   init_wifi("iScrowleey", "ISC_6969.");
   config.api_key = API_KEY;
@@ -59,24 +65,57 @@ void setup() {
 void loop() {
       controlfire=GetActuatorData("firestate");
       
-     
-      
       Serial.println("fire");
       Serial.println(controlfire);
       controlhealth=GetActuatorData("healthstate");
       Serial.println("health");
-      Serial.println( controlhealth);
+      Serial.println(controlhealth);
       controlwensh=GetActuatorData("wenshstate");
       Serial.println("wensh");
-      Serial.println( controlwensh);
-      // tone(buzzerPin, frequency, duration);
-      // delay(500);
-      // tone(buzzerPin2, 880, duration);
-      // delay(500);
-      // tone(buzzerPin3, 560, duration);
-      // isTonePlaying = true;
-      // delay(1000);
+      Serial.println(controlwensh);
+      if(controlfire){
+      tone(buzzerPin, frequency, duration);
+      // digitalWrite(ledPin1, HIGH);
+      tone(buzzerPin2, 880, duration);
+      // digitalWrite(ledPin2, HIGH);
+      tone(buzzerPin3, 560, duration);
+      // digitalWrite(ledPin3, HIGH);
+      isTonePlaying = true;
+      delay(500);
+      }
+      else if(controlhealth){
+      tone(buzzerPin2, 880, duration);
+      // digitalWrite(ledPin3, HIGH);
+      isTonePlaying = true;
+      delay(500);
+      }
+      else if(controlwensh){
+         tone(buzzerPin3, 560, duration);
+          // digitalWrite(ledPin3, HIGH);
+          isTonePlaying = true;
+          delay(500);
+      }
+      else{
+        Serial.println("no problem detected <3");
+      }
+      
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void init_wifi(String WIFI_SSID, String WIFI_PASSWORD) {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting to Wi-Fi");
