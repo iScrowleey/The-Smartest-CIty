@@ -21,15 +21,12 @@ void createEsp(String esp_name);
 #define USER_EMAIL "smartcity@gmail.com"
 #define USER_PASSWORD "12345678"
 #define Token "3jXVxxfE9AbL3cnV7Hm0X2dz1Hp2"
-
 #define IR_Sensor1 D0
 #define IR_Sensor2 D1
 #define IR_Sensor3 D2
 #define IR_Sensor4 D3
 #define IR_Sensor5 D4
-
 #define IR_SensorSurvo D5
-
 Servo servo_3;
 int IR1;
 int IR2;
@@ -38,12 +35,10 @@ int IR4;
 int IR5;
 
 int IRSurvo;
-
 bool control; 
 
 
 void setup() {
-
   pinMode(IR_Sensor1, INPUT); /*IR Pin D14 defined as Input*/
   pinMode(IR_Sensor2, INPUT); /*IR Pin D14 defined as Input*/
   pinMode(IR_Sensor3, INPUT); /*IR Pin D14 defined as Input*/
@@ -52,6 +47,7 @@ void setup() {
 
   pinMode(IR_SensorSurvo, INPUT);
   servo_3.attach(D7, 500, 2500);
+  
   Serial.begin(115200);
   init_wifi("iScrowleey", "ISC_6969.");
   config.api_key = API_KEY;
@@ -72,7 +68,6 @@ void setup() {
 void loop() {
 control= GetActuatorData("control");
  if(control){
- 
   IR1 = digitalRead(IR_Sensor1);
   createslote(IR1,"slot_1");
   Serial.print("IR1");
@@ -97,7 +92,6 @@ control= GetActuatorData("control");
   createslote(IR5,"slot_5");
   Serial.print("IR5");
   Serial.println(IR5);
-
     if(!IR1&&!IR2&&!IR3&&!IR4&&!IR5){
       Serial.print("gvcbngvgbcgb");
    }else{
@@ -112,16 +106,9 @@ control= GetActuatorData("control");
     delay(1000);  // Wait for 1000 millisecond(s)
   } 
 
-
 }
 
-
-
-
 }
-
-
-
 
 }
 
