@@ -21,12 +21,14 @@ void createEsp(String esp_name);
 #define USER_EMAIL "smartcity@gmail.com"
 #define USER_PASSWORD "12345678"
 #define Token "3jXVxxfE9AbL3cnV7Hm0X2dz1Hp2"
-#define IR_Sensor1 D0
+#define IR_Sensor1 D8
 #define IR_Sensor2 D1
 #define IR_Sensor3 D2
 #define IR_Sensor4 D3
 #define IR_Sensor5 D4
 #define IR_SensorSurvo D5
+#define IR_SensorSurvo2 D6
+
 Servo servo_3;
 int IR1;
 int IR2;
@@ -35,6 +37,8 @@ int IR4;
 int IR5;
 
 int IRSurvo;
+int IRSurvo2;
+
 bool control; 
 
 
@@ -46,10 +50,12 @@ void setup() {
   pinMode(IR_Sensor5, INPUT); /*IR Pin D14 defined as Input*/
 
   pinMode(IR_SensorSurvo, INPUT);
+  pinMode(IR_SensorSurvo2, INPUT);
+
   servo_3.attach(D7, 500, 2500);
-  
+
   Serial.begin(115200);
-  init_wifi("iScrowleey", "ISC_6969.");
+  init_wifi("ENJAZ", "0938913492");
   config.api_key = API_KEY;
   auth.user.email = USER_EMAIL;
   auth.user.password = USER_PASSWORD;
@@ -64,45 +70,51 @@ void setup() {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
     createslote(0,"control");
 
+
 }
 void loop() {
 control= GetActuatorData("control");
  if(control){
   IR1 = digitalRead(IR_Sensor1);
   createslote(IR1,"slot_1");
-  Serial.print("IR1");
+  Serial.println("IR1");
   Serial.println(IR1);
 ////////////////////////////////////////////////////
   IR2 = digitalRead(IR_Sensor2);
   createslote(IR2,"slot_2");
-  Serial.print("IR2");
+  Serial.println("IR2");
   Serial.println(IR2);
 ///////////////////////////////////////////////////
   IR3 = digitalRead(IR_Sensor3);
   createslote(IR3,"slot_3");
-  Serial.print("IR3");
+  Serial.println("IR3");
   Serial.println(IR3);
 ///////////////////////////////////////////////////
   IR4 = digitalRead(IR_Sensor4);
   createslote(IR4,"slot_4");
-  Serial.print("IR4");
+  Serial.println("IR4");
   Serial.println(IR4);
 //////////////////////////////////////////////////
   IR5 = digitalRead(IR_Sensor5);
   createslote(IR5,"slot_5");
-  Serial.print("IR5");
+  Serial.println("IR5");
   Serial.println(IR5);
     if(!IR1&&!IR2&&!IR3&&!IR4&&!IR5){
-      Serial.print("gvcbngvgbcgb");
+      Serial.print("Full");
    }else{
     IRSurvo = digitalRead(IR_SensorSurvo);
-   if (IRSurvo == 0) {
+    IRSurvo2= digitalRead(IR_SensorSurvo2);
+  Serial.println("IRSurvo");
+  Serial.println(IRSurvo);
+    Serial.println("IRSurvo2");
+  Serial.println(IRSurvo2);
+   if (IRSurvo == 0||IRSurvo2==0) {
+    servo_3.write(0);
+    delay(5000);  // Wait for 1000 millisecond(s)
     servo_3.write(90);
-    delay(2000);  // Wait for 1000 millisecond(s)
-      servo_3.write(0);
 
   } else {
-    servo_3.write(0);
+    servo_3.write(90);
     delay(1000);  // Wait for 1000 millisecond(s)
   } 
 
