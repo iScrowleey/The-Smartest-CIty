@@ -3,8 +3,8 @@
 #include <addons/TokenHelper.h>
 
 
-#define API_KEY "AIzaSyANq6WLzOBjSDODbCjJN5NwIgtR62ljFZA"
-#define FIREBASE_PROJECT_ID "smart-city-2cd2c"
+#define API_KEY "AIzaSyAuEr4Wbuat6dSs5B-ywvJlJ5blG9I5cWg"
+#define FIREBASE_PROJECT_ID "smart-city-2-58f46"
 FirebaseData Sfbdo;
 FirebaseData Afbdo;
 FirebaseAuth auth;
@@ -19,15 +19,12 @@ bool GetActuatorData(String actuatorName);
 void createEsp(String esp_name);
 #define USER_EMAIL "smartcity@gmail.com"
 #define USER_PASSWORD "12345678"
-#define Token "3jXVxxfE9AbL3cnV7Hm0X2dz1Hp2"
+#define Token "EwbSsAn25IffBUdkJKsbXSaxYo23"
 ////////////////////////////////////
 
 /////////////////////////////////////
 
-const int ledSet1 = D1; // GPIO5
-const int ledSet2 = D2; // GPIO4
-const int ledSet3 = D3; // GPIO0
-const int ledSet4 = D4; // GPIO2
+const int RoadLights = D1; // GPIO5
 const int ldrPin = A0; // Analog pin
 const int lightThreshold = 512;
 //////////////////////////////////
@@ -36,12 +33,9 @@ bool switch_light;
 ////////////////////////////
 void setup() {
  // Initialize LED pins as outputs
-  pinMode(ledSet1, OUTPUT);
-  pinMode(ledSet2, OUTPUT);
-  pinMode(ledSet3, OUTPUT);
-  pinMode(ledSet4, OUTPUT);
+  pinMode(RoadLights, OUTPUT);
   Serial.begin(115200);
-  init_wifi("iScrowleey", "ISC_6969.");
+  init_wifi("ENJAZ","0938913492");
   config.api_key = API_KEY;
   auth.user.email = USER_EMAIL;
   auth.user.password = USER_PASSWORD;
@@ -69,32 +63,20 @@ if(control_light==true){
   // Check if the light value is below the threshold
   if (lightValue < lightThreshold) {
     // Light up each set of LEDs with a 1-second delay between each set
-    digitalWrite(ledSet1, HIGH);
-    digitalWrite(ledSet2, HIGH);
-    digitalWrite(ledSet3, HIGH);
-    digitalWrite(ledSet4, HIGH);
+    digitalWrite(RoadLights, HIGH);
   } else {
     // Turn off all LEDs if the light value is above the thresholds
-    digitalWrite(ledSet1, LOW);
-    digitalWrite(ledSet2, LOW);
-    digitalWrite(ledSet3, LOW);
-    digitalWrite(ledSet4, LOW);
+    digitalWrite(RoadLights, LOW);
   }
 
   // Add a small delay to avoid flooding the serial monitor
   delay(100);
 }
 else if (control_light==false && switch_light==true){
-    digitalWrite(ledSet1, HIGH);
-    digitalWrite(ledSet2, HIGH);
-    digitalWrite(ledSet3, HIGH);
-    digitalWrite(ledSet4, HIGH);
+    digitalWrite(RoadLights, HIGH);
 }
 else{
-    digitalWrite(ledSet1, LOW);
-    digitalWrite(ledSet2, LOW);
-    digitalWrite(ledSet3, LOW);
-    digitalWrite(ledSet4, LOW);
+    digitalWrite(RoadLights, LOW);
 }
 
 }
@@ -131,13 +113,14 @@ void createslote(bool sensorData, String slotName) {
       content.set(filed, String(sensorData).c_str());
 
       if (Firebase.Firestore.createDocument(&Sfbdo, FIREBASE_PROJECT_ID, "" /* databaseId can be (default) or empty */, documentPath.c_str(), content.raw())) {
+      
+      Serial.printf("ok\n%s\n\n", Sfbdo.payload().c_str());
       }
-      // Serial.printf("ok\n%s\n\n", Sfbdo.payload().c_str());
-      else
+      else{
         Serial.println(Sfbdo.errorReason());
     }
 
-
+    }
     count++;
     content.clear();
     content.set(filed, String(sensorData).c_str());
